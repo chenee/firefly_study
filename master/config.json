@@ -1,0 +1,6 @@
+{
+    "master": {
+        "rootport": 9999,
+        "webport": 9998
+    }
+ }

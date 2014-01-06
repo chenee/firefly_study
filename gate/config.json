@@ -1,0 +1,30 @@
+{
+    "db": {
+        "charset": "utf8",
+        "db": "anheisg",
+        "host": "localhost",
+        "passwd": "",
+        "port": 3306,
+        "user": "root"
+    },
+    "master": {
+        "rootport": 9999,
+        "webport": 9998
+    },
+    "memcached": {
+        "hostname": "anheisg",
+        "urls": [
+            "127.0.0.1:11211"
+        ]
+    },
+    "servers": {
+        "gate": {
+            "app": "app.gateserver",
+            "db": true,
+            "log": "app/logs/gate.log",
+            "mem": true,
+            "name": "gate",
+            "rootport": 10000
+        }
+    }
+}

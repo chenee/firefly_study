@@ -1,0 +1,34 @@
+{
+    "db": {
+        "charset": "utf8",
+        "db": "anheisg",
+        "host": "localhost",
+        "passwd": "",
+        "port": 3306,
+        "user": "root"
+    },
+    "master": {
+        "rootport": 9999,
+        "webport": 9998
+    },
+    "memcached": {
+        "hostname": "anheisg",
+        "urls": [
+            "127.0.0.1:11211"
+        ]
+    },
+    "servers": {
+        "net": {
+            "app": "app.netserver",
+            "log": "app/logs/net.log",
+            "name": "net",
+            "netport": 11009,
+            "remoteport": [
+                {
+                    "rootname": "gate",
+                    "rootport": 10000
+                }
+            ]
+        }
+    }
+}
