@@ -25,3 +25,9 @@ http://blog.csdn.net/chenee543216/article/details/17787133
 
 
 这个代码可以跑，目前只做学习用，学习笔记更新完毕以后，如果有时间还需要不断重构。
+
+运行的步骤：
+1、运行环境搭建请参考9秒官网的wiki
+2、每个目录对应一个独立的模块，目录下面的run.sh为mac/linux启动脚本： ./run.sh
+为了便于看log信息，建议在每个终端运行一个模块。
+3、启动顺序为master，db, gate, net, game1, admin
