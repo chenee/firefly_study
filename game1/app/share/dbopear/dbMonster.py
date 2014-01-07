@@ -14,8 +14,12 @@ def getAllMonsterInfo():
     """
     global All_MonsterInfo
     sql = "SELECT * FROM tb_monster"
-    result = dbpool.getSqlResult(sql)
-
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    cursor.close()
+    conn.close()
     for monster in result:
         All_MonsterInfo[monster['id']] = monster
 

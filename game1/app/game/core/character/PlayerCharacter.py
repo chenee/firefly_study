@@ -25,7 +25,7 @@ from app.share.dbopear import dbSkill
 
 class PlayerCharacter(Character):
     """玩家角色类"""
-    def __init__(self, cid, name=u'城管', dynamicId=-1, status = 1):
+    def __init__(self , cid , name = u'城管', dynamicId = -1,status = 1):
         """构造方法
         @dynamicId （int） 角色登陆的动态ID socket连接产生的id
         """

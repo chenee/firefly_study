@@ -22,7 +22,12 @@ def getBuffOffsetInfo():
     """
     global BUFF_BUFF
     sql = "SELECT * FROM tb_buff_buff"
-    result = dbpool.getSqlResult(sql)
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result=cursor.fetchall()
+    cursor.close()
+    conn.close()
     for offset in result:
         if not BUFF_BUFF.has_key(offset['buffId']):
             BUFF_BUFF[offset['buffId']] = {}
@@ -33,8 +38,12 @@ def getBuffAddition():
     """
     global BUFF_SKILL
     sql = "SELECT * FROM tb_buff_skill"
-    result = dbpool.getSqlResult(sql)
-
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result=cursor.fetchall()
+    cursor.close()
+    conn.close()
     for addition in result:
         if not BUFF_SKILL.has_key(addition['buffId']):
             BUFF_SKILL[addition['buffId']] = {}
@@ -43,8 +52,12 @@ def getBuffAddition():
 def getSkillEffectByID(skillEffectID):
     """获取技能效果ID"""
     sql = "SELECT * FROM tb_skill_effect where effectId=%d"%skillEffectID
-    result = dbpool.getSqlResult(sql)
-
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result=cursor.fetchone()
+    cursor.close()
+    conn.close()
     return result
 
 def getAllSkill():
@@ -53,40 +66,50 @@ def getAllSkill():
     #技能池
     #技能组
     """
-    global ALL_SKILL_INFO, SKILL_GROUP, PROFESSION_SKILLGROUP
+    global  ALL_SKILL_INFO,SKILL_GROUP,PROFESSION_SKILLGROUP
     sql = "SELECT * FROM tb_skill_info"
-    result = dbpool.getSqlResult(sql)
-
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    cursor.close()
+    conn.close()
     for skill in result:
         effectInfo = getSkillEffectByID(skill['effect'])
         skill['effect'] = effectInfo
         ALL_SKILL_INFO[skill['skillId']] = skill
-        # if not SKILL_GROUP.has_key(skill['skillGroup']):
-        if not skill['skillGrop'] in SKILL_GROUP:
+        if not SKILL_GROUP.has_key(skill['skillGroup']):
             SKILL_GROUP[skill['skillGroup']] = {}
         SKILL_GROUP[skill['skillGroup']][skill['level']] = skill
     #初始化职业技能组ID
     for groupID in SKILL_GROUP:
         skillInfo = SKILL_GROUP[groupID].get(1)
         profession = skillInfo.get('profession',0)
-        # if not PROFESSION_SKILLGROUP.has_key(profession):
-        if not profession in PROFESSION_SKILLGROUP:
+        if not PROFESSION_SKILLGROUP.has_key(profession):
             PROFESSION_SKILLGROUP[profession] = []
         PROFESSION_SKILLGROUP[profession].append(groupID)
 
 def getBuffEffect(buffEffectID):
     """获取buff效果"""
     sql = "SELECT * FROM tb_buff_effect where buffEffectID = %d"%buffEffectID
-    result = dbpool.getSqlResult(sql)
-
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result=cursor.fetchone()
+    cursor.close()
+    conn.close()
     return result
 
 def getAllBuffInfo():
     """获取所有技能的信息"""
     global ALL_BUFF_INFO
     sql = "SELECT * FROM tb_buff_info"
-    result = dbpool.getSqlResult(sql)
-
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result=cursor.fetchall()
+    cursor.close()
+    conn.close()
     for buff in result:
         ALL_BUFF_INFO[buff['buffId']] = buff
         effectInfo = getBuffEffect(buff['buffEffectID'])

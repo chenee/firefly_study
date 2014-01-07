@@ -17,9 +17,8 @@ def operaplayer_99(pid,oprea_str):
     if not player:
         player = PlayerCharacter(pid)
         isOnline = 0
-
-    exec oprea_str  #player.finance.addCoin(1000)脚本例子，通过角色类进行角色的各种操作，player.XXX.XXX
+    exec(oprea_str)#player.finance.addCoin(1000)脚本例子，通过角色类进行角色的各种操作，player.XXX.XXX
     if isOnline == 0:
         player.updatePlayerDBInfo()
     
-
+    

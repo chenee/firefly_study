@@ -139,7 +139,7 @@ class MFKMode(MemObject):
 
 class MAdmin(MemObject):
 
-    def __init__(self, name, pk, timeout=TIMEOUT, **kw):
+    def __init__(self, name,pk,timeout=TIMEOUT,**kw):
         MemObject.__init__(self, name, mclient)
         self._pk = pk
         self._fk = kw.get('fk','')
@@ -159,7 +159,7 @@ class MAdmin(MemObject):
         recordlist = util.ReadDataFromDB(mmname)
         for record in recordlist:
             pk = record[self._pk]
-            mm = MMode(self._name + ':%s' % pk, self._pk, data=record)
+            mm = MMode(self._name+':%s'%pk,self._pk,data=record)
             mm.insert()
 
     @property

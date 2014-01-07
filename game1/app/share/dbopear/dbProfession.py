@@ -15,8 +15,12 @@ def getProfession_Config():
     """获取职业配置表信息"""
     global tb_Profession_Config
     sql = "select * from tb_profession"
-    result = dbpool.getSqlResult(sql)
-
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    cursor.close()
+    conn.close()
     for _item in result:
         tb_Profession_Config[_item['preId']] = _item
 

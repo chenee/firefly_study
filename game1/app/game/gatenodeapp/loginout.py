@@ -18,4 +18,4 @@ def NetConnLost_2(dynamicId):
     player.updatePlayerDBInfo()
     PlayersManager().dropPlayer(player)
     return True
-
+    

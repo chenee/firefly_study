@@ -92,7 +92,7 @@ class MemObject:
         """自增
         """
         key = self.produceKey(key)
-        return self._client.incr(key, delta)
+        return self._client.incr( key, delta)
 
     def insert(self):
         """插入对象记录

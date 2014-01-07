@@ -50,4 +50,4 @@ def GuYongRecord_2309(dynamicId,request_proto):
     data = firend.getGuyongRecord(dynamicId,characterId)
     return json.dumps(data)
     
-
+    

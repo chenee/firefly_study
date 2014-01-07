@@ -11,8 +11,12 @@ SHIELDWORD = []
 def getAll_ShieldWord():
     global SHIELDWORD
     sql = "SELECT sword FROM tb_shieldword;"
-    result = dbpool.getSqlResult(sql)
-
+    conn = dbpool.connection()
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    cursor.close()
+    conn.close()
     SHIELDWORD = result
 
 def checkIllegalChar(chars):
@@ -20,7 +24,7 @@ def checkIllegalChar(chars):
     @param chars: str 源字符
     """
     for word in SHIELDWORD:
-        if chars.find(word[0]) != -1:
+        if chars.find(word[0])!=-1:
             return False
     return True
 
@@ -29,7 +33,7 @@ def replaceIllegalChar(chars):
     @param chars: str 源字符
     """
     for word in SHIELDWORD:
-        chars = chars.replace(word[0], '*' * len(word[0]))
+        chars = chars.replace(word[0],'*'*len(word[0]))
     return chars
 
 

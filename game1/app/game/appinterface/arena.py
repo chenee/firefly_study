@@ -11,9 +11,9 @@ def GetJingJiInfo3700(dynamicId,characterId):
     """
     player = PlayersManager().getPlayerByID(characterId)
     if not player or not player.CheckClient(dynamicId):
-        return {'result': False, 'message': u""}
+        return {'result':False,'message':u""}
     data = player.arena.getArenaAllInfo()
-    return {'result': True, 'data': data}
+    return {'result':True,'data':data}
 
 
 

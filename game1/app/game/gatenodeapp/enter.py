@@ -14,21 +14,20 @@ from app.game.core.PlayersManager import PlayersManager
 def enterPlace_601(dynamicId, characterId, placeId,force,player):
     """进入场景"""
     if not player:
-        player = PlayerCharacter(characterId, dynamicId=dynamicId)
+        player = PlayerCharacter(characterId,dynamicId = dynamicId)
     PlayersManager().addPlayer(player)
     playerinfo = player.formatInfo()
-    responsedata = {'result': True,
-                    'message': '',
-                    'data': {'cid': playerinfo['id'],
-                            'name': playerinfo['nickname'],
-                            'level': playerinfo['level'],
-                            'exp': playerinfo['exp'],
-                            'maxexp': playerinfo['maxExp'],
-                            'coin': playerinfo['coin'],
-                            'yuanbao': playerinfo['gold'],
-                            'power': playerinfo['maxHp'],
-                            'gas': playerinfo['energy'],
-                            'profession': playerinfo['profession']}
+    responsedata = {'result':True,'message':'',
+                    'data':{'cid':playerinfo['id'],
+                            'name':playerinfo['nickname'],
+                            'level':playerinfo['level'],
+                            'exp':playerinfo['exp'],
+                            'maxexp':playerinfo['maxExp'],
+                            'coin':playerinfo['coin'],
+                            'yuanbao':playerinfo['gold'],
+                            'power':playerinfo['maxHp'],
+                            'gas':playerinfo['energy'],
+                            'profession':playerinfo['profession']}
                     }
     return responsedata
 

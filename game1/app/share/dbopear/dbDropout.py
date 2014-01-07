@@ -5,6 +5,7 @@ Created on 2013-8-15
 @author: lan (www.9miao.com)
 """
 from dbpool import dbpool
+from MySQLdb.cursors import DictCursor
 from app.game.core.Item import Item
 from twisted.python import log
 import random
@@ -15,9 +16,13 @@ BASERATE=100000 #几率的基数
 def getAll():
     """获取所有掉落信息"""
     global DROPOUT_CONFIG
-    sql = "select * from tb_dropout"
-    result = dbpool.getSqlResult(sql)
-
+    sql="select * from tb_dropout"
+    conn = dbpool.connection()
+    cursor = conn.cursor(cursorclass=DictCursor)
+    cursor.execute(sql)
+    result=cursor.fetchall()
+    cursor.close()
+    conn.close()
     if not result:
         return None
     for item in result:
@@ -33,12 +38,11 @@ def getDropByid(did):
     if not data:
         log.err(u'掉落表填写错误不存在掉落信息-掉落主键:%d'%did)
         return None
-
     for item in data.get('itemid'):
-        abss = random.randint(1, BASERATE)
-        if 1 <= abss <= item[2]:  #如果随机出来此物品
-            abss = random.randint(1, item[1])   #物品数量
-            item1 = Item(item[0])
+        abss=random.randint(1,BASERATE)
+        if abss>=1 and abss<=item[2]:#如果随机出来此物品
+            abss=random.randint(1,item[1]) #物品数量
+            item1=Item(item[0])
             item1.pack.setStack(abss)
             return item1
     return None
