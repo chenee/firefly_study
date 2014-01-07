@@ -71,7 +71,7 @@ class leafNode(object):
         return deferedRemote.addCallback(callBack,'callTarget',commandId,*args,**kw)
 
     def callTarget(self, targetKey, *args, **kw):
-        self._service.callTarget(targetKey,*args,**kw)
+        return self._service.callTarget(targetKey,*args,**kw)
 
 
 

@@ -5,7 +5,6 @@ Created on 2012-3-1
 @author: sean_lan
 """
 from firefly.dbentrust.dbpool import dbpool
-from MySQLdb.cursors import DictCursor
 import datetime
 
 
@@ -14,12 +13,8 @@ def getUserInfo(uid):
     @param id: int 用户的id
     """
     sql = "select * from tb_user_character where id = %d"%(uid)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchOne(sql, 1)
+
     return result
 
 def checkUserPassword(username,password):
@@ -28,12 +23,8 @@ def checkUserPassword(username,password):
     @param password: str 用户密码
     """
     sql = "select id from `tb_register` where username = '%s' and password = '%s'" %( username, password)
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchOne(sql)
+
     pid = 0
     if result:
         pid = result[0]
@@ -46,12 +37,8 @@ def getUserInfoByUsername(username,password):
     """
     sql = "select * from `tb_register` where username = '%s'\
      and password = '%s'" %( username, password)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchOne(sql, 1)
+
     return result
 
 def creatUserCharacter(uid):
@@ -59,12 +46,7 @@ def creatUserCharacter(uid):
     @param id: int 用户id
     """
     sql = "insert into `tb_user_character` (`id`) values(%d)" %uid
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    count = cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
+    count = dbpool.executeSQL(sql)
     if count >= 1:
         return True
     else:
@@ -77,12 +59,8 @@ def updateUserCharacter(userId ,fieldname ,characterId):
     @param characterId: int 角色的id
     """
     sql = "update `tb_user_character` set %s = %d where id = %d"%(fieldname ,characterId ,userId)
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    count = cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
+    count = dbpool.executeSQL(sql)
+
     if count >= 1:
         return True
     else:
@@ -91,12 +69,8 @@ def updateUserCharacter(userId ,fieldname ,characterId):
 def InsertUserCharacter(userId,characterId):
     """加入角色用户关系"""
     sql = "update tb_register set characterId = %d where `id` = %d"%( characterId ,userId)
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    count = cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
+    count = dbpool.executeSQL(sql)
+
     if count >= 1:
         return True
     else:
@@ -107,12 +81,8 @@ def checkCharacterName(nickname):
     @param nickname: str 角色的名称
     """
     sql = "SELECT `id` from tb_character where nickname = '%s'"%nickname
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchOne(sql)
+
     if result:
         return False
     return True
@@ -149,35 +119,21 @@ def getUserCharacterInfo(characterId):
     @param id: int 用户的id
     """
     sql = "select town from tb_character where id = %d"%(characterId)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchOne(sql, 1)
     return result
 
 def CheckUserInfo(Uid):
     """检测用户信息"""
     sql = "SELECT * from tb_register where username = '%s'"%Uid
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchOne(sql, 1)
+
     return result
 
 def creatUserInfo(username,password):
     """创建
     """
     sql = "insert into tb_register(username,`password`) values ('%s','%s')"%(username,password)
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    count = cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
+    count = dbpool.executeSQL(sql)
     if(count >= 1):
         return True
     return False

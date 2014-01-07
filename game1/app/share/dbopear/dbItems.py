@@ -5,7 +5,6 @@ Created on 2011-7-14
 @author: lan (www.9miao.com)
 """
 from dbpool import dbpool
-from MySQLdb.cursors import DictCursor
 
 all_ItemTemplate = {} #所有的物品模板信息
 ALL_SETINFO = {}
@@ -16,12 +15,7 @@ def getAll_ItemTemplate():
     """
     global all_ItemTemplate
     sql="select * from `tb_item_template`"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result=cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
     for _item in result:
         all_ItemTemplate[_item['id']] = _item
 
@@ -30,12 +24,8 @@ def getAllsetInfo():
     """
     global ALL_SETINFO
     sql = "SELECT * from tb_equipmentset;"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     for setinfo in result:
         ALL_SETINFO[setinfo['id']] = setinfo
 

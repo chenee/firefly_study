@@ -11,12 +11,7 @@ SHIELDWORD = []
 def getAll_ShieldWord():
     global SHIELDWORD
     sql = "SELECT sword FROM tb_shieldword;"
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
     SHIELDWORD = result
 
 def checkIllegalChar(chars):

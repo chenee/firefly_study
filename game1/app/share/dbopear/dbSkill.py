@@ -5,7 +5,6 @@ Created on 2013-8-14
 @author: lan (www.9miao.com)
 """
 from dbpool import dbpool
-from MySQLdb.cursors import DictCursor
 
 ALL_SKILL_INFO = {}
 SKILL_GROUP = {}
@@ -22,12 +21,7 @@ def getBuffOffsetInfo():
     """
     global BUFF_BUFF
     sql = "SELECT * FROM tb_buff_buff"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result=cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
     for offset in result:
         if not BUFF_BUFF.has_key(offset['buffId']):
             BUFF_BUFF[offset['buffId']] = {}
@@ -38,12 +32,8 @@ def getBuffAddition():
     """
     global BUFF_SKILL
     sql = "SELECT * FROM tb_buff_skill"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result=cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     for addition in result:
         if not BUFF_SKILL.has_key(addition['buffId']):
             BUFF_SKILL[addition['buffId']] = {}
@@ -52,12 +42,8 @@ def getBuffAddition():
 def getSkillEffectByID(skillEffectID):
     """获取技能效果ID"""
     sql = "SELECT * FROM tb_skill_effect where effectId=%d"%skillEffectID
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result=cursor.fetchone()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchOne(sql, 1)
+
     return result
 
 def getAllSkill():
@@ -68,12 +54,8 @@ def getAllSkill():
     """
     global  ALL_SKILL_INFO,SKILL_GROUP,PROFESSION_SKILLGROUP
     sql = "SELECT * FROM tb_skill_info"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     for skill in result:
         effectInfo = getSkillEffectByID(skill['effect'])
         skill['effect'] = effectInfo
@@ -92,24 +74,16 @@ def getAllSkill():
 def getBuffEffect(buffEffectID):
     """获取buff效果"""
     sql = "SELECT * FROM tb_buff_effect where buffEffectID = %d"%buffEffectID
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result=cursor.fetchone()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchOne(sql, 1)
+
     return result
 
 def getAllBuffInfo():
     """获取所有技能的信息"""
     global ALL_BUFF_INFO
     sql = "SELECT * FROM tb_buff_info"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result=cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     for buff in result:
         ALL_BUFF_INFO[buff['buffId']] = buff
         effectInfo = getBuffEffect(buff['buffEffectID'])

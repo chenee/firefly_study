@@ -4,7 +4,6 @@ Created on 2011-8-19
 @author: SIOP_09
 """
 from dbpool import dbpool
-from MySQLdb.cursors import DictCursor
 from app.game.core.language.Language import Lg
 
 
@@ -17,12 +16,7 @@ def addFriend(characterId,playerId,friendType,isSheildedMail=0):
     """
     sql = "insert into `tb_friend`(characterId,playerId,friendType,isSheildedMail)\
      values(%d,%d,%d,%d)"%(characterId,playerId,friendType,isSheildedMail)
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    count = cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
+    count = dbpool.executeSQL(sql)
     if count>=1:
         return True
     return False
@@ -33,12 +27,8 @@ def deletePlayerFriend(characterId,friendId):
     @param friendId: int 好友编号
     """
     sql = 'delete from `tb_friend` where characterId=%d friendId = %d'%(characterId,friendId)
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    count = cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
+    count = dbpool.executeSQL(sql)
+
     if count>=1:
         return True
     return False
@@ -49,13 +39,8 @@ def getFirendListByFlg(pid,flg):
     @param pid: int 角色id
     @param flg: int 1好友   2黑名单
     """
-    sql="SELECT playerId FROM tb_friend WHERE characterId=%s AND friendType=%s"%(pid,flg)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    sql = "SELECT playerId FROM tb_friend WHERE characterId=%s AND friendType=%s"%(pid,flg)
+    result = dbpool.fetchAll(sql)
     if not result:
         return []
     listdata=[]
@@ -68,12 +53,7 @@ def getFriendTopLevel(characterId,index,limit=20):
     """
     sql = "SELECT id,nickname,level,coin \
     FROM tb_character WHERE `id`!=%d ORDER BY level LIMIT %d,%d;"%(characterId,index,limit)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result= cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
     return result
 
 def getFriendTopGuanqia(characterId,index,limit=20):
@@ -81,12 +61,8 @@ def getFriendTopGuanqia(characterId,index,limit=20):
     """
     sql = "SELECT id,nickname,`level`,coin FROM tb_character WHERE\
      `id`!=%d ORDER BY guanqia LIMIT %d,%d;"%(characterId,index,limit)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result= cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     return result
 
 def getAllCharacterTop(index,limit=20):
@@ -94,12 +70,8 @@ def getAllCharacterTop(index,limit=20):
     """
     sql = "SELECT id,nickname,`level`,coin FROM\
      tb_character ORDER BY guanqia LIMIT %d,%d;"%(index,limit)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result= cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     return result
 
 def UpdateGuYongState(characterId,tid,state):
@@ -107,13 +79,8 @@ def UpdateGuYongState(characterId,tid,state):
     """
     sql = "UPDATE `tb_friend` SET guyong = %d WHERE characterId=%d \
     AND playerId =%d"%(state,characterId,tid)
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    count = cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
-    if count>=1:
+    count = dbpool.executeSQL(sql)
+    if count >= 1:
         return True
     return False
 
@@ -124,25 +91,15 @@ def addGuyongRecord(characterId,rolename,zyname,zyid,bresult,coinbound,huoli):
     chaname,zyname,zyid,battleresult,coinbound,huoli) VALUES \
     (%d,'%s','%s',%d,%d,%d,%d)"%((characterId,rolename,zyname,\
                                   zyid,bresult,coinbound,huoli))
-    conn = dbpool.connection()
-    cursor = conn.cursor()
-    count = cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
-    if count>=1:
+    count = dbpool.executeSQL(sql)
+    if count >= 1:
         return True
     return False
 
 def getGuyongRecord(characterId):
     sql = "SELECT * FROM tb_guyong_record WHERE \
     characterId = %d ORDER BY reocrddate DESC LIMIT 0,10;"%(characterId)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result= cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
     return result
 
 def getGuYongList(pid):
@@ -150,12 +107,8 @@ def getGuYongList(pid):
     @param pid: int 角色id
     """
     sql="SELECT playerId FROM tb_friend WHERE characterId=%s AND guyong=1"%(pid)
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     if not result:
         return []
     listdata=[]

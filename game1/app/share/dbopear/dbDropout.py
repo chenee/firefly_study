@@ -5,7 +5,6 @@ Created on 2013-8-15
 @author: lan (www.9miao.com)
 """
 from dbpool import dbpool
-from MySQLdb.cursors import DictCursor
 from app.game.core.Item import Item
 from twisted.python import log
 import random
@@ -16,13 +15,8 @@ BASERATE=100000 #几率的基数
 def getAll():
     """获取所有掉落信息"""
     global DROPOUT_CONFIG
-    sql="select * from tb_dropout"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result=cursor.fetchall()
-    cursor.close()
-    conn.close()
+    sql = "select * from tb_dropout"
+    result = dbpool.fetchAll(sql)
     if not result:
         return None
     for item in result:

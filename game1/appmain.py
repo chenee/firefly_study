@@ -5,7 +5,8 @@ if os.name!='nt' and os.name!='posix':
     from twisted.internet import epollreactor
     epollreactor.install()
 
-import json,sys
+import json
+
 from server import FFServer
 
 if __name__ == "__main__":

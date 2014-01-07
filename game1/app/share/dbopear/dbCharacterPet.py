@@ -6,7 +6,6 @@ Created on 2011-12-14
 """
 
 from dbpool import dbpool
-from MySQLdb.cursors import DictCursor
 
 PET_TRAIN_CONFIG = {}
 PET_TEMPLATE = {}#宠物模板表
@@ -30,12 +29,7 @@ def getPetExp():
     """获取宠物的经验表"""
     global PET_EXP
     sql = "SELECT * FROM tb_pet_experience"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
     for exp in result:
         PET_EXP[exp['level']] = exp['ExpRequired']
         
@@ -44,12 +38,8 @@ def getAllPetGrowthConfig():
     """
     global PET_GROWTH
     sql = "SELECT * FROM tb_pet_growth"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     for growthconfig in result:
         attrType = growthconfig['pettype']
         quality = growthconfig['quality']
@@ -61,12 +51,8 @@ def getAllPetTemplate():
     """获取宠物的模板信息"""
     global PET_TEMPLATE,shopAll,shopXy,PET_TYPE
     sql = "SELECT * FROM tb_pet_template ORDER BY `level` , `id`;"
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
+
     for pet in result:
         attrType = pet['attrType']
         if not PET_TYPE.has_key(attrType):
@@ -85,12 +71,7 @@ def getPetTrainConfig():
     """获取宠物培养配置信息"""
     global PET_TRAIN_CONFIG
     sql = "SELECT * FROM tb_pet_training "
-    conn = dbpool.connection()
-    cursor = conn.cursor(cursorclass=DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    result = dbpool.fetchAll(sql)
     for train in result:
         PET_TRAIN_CONFIG[train['quality']] = train
     return result
