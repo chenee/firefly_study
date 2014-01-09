@@ -1,5 +1,9 @@
 # 游戏服务器学习笔记1------介绍firefly，twisted
 
+实在对不住大家，我不会编辑README.md 。
+这篇文字是用mac版本的word编辑的，粘贴到这里以后很多地方格式都乱了，尤其是代码非常影响阅读。
+请大家下载这个REAME.md文件然后用word打开，阅读效果会比较好。sorry
+
 Chapter 1  简介
 不懂后台的前端不是一个好美工！
 
@@ -11,7 +15,7 @@ Chapter 1  简介
 
 首先，firefly是国人开源的server，非常值得推介。网站：   www.9miao.com,  QQ群：153643834
 
-firefly是基于twisted开发的，关于twisted和firefly的详细内容，由于我从来不打草稿，所以想到那里写到那里。
+firefly是基于twisted开发的，关于twisted和firefly的详细内容，我会结合使用的地方进行介绍。
 
 
 另外由于我压根是入门菜菜，所以必须有很多错误需要大家来批评，鞭策，指正。在这里先谢过。
@@ -94,7 +98,8 @@ OK，架构简介到这里，后面我们每个模块分开详细介绍。
 master 类很简单，就3个函数，一个init，设置配置信息，并调用masterapp，然后还有一个循环启动子进程的start函数。
 这里只有masterapp函数值得我们关注。
 代码如下：
-36     def masterapp(self):
+
+ 36     def masterapp(self):
  37         config = json.load(open(self.configpath,'r'))
  38         mastercnf = config.get('master')
  39         rootport = mastercnf.get('rootport')
